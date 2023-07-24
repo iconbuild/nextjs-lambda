@@ -1,5 +1,6 @@
 import { CfnOutput, Duration, Stack } from 'aws-cdk-lib'
 import { Code, Function, LayerVersion, Runtime } from 'aws-cdk-lib/aws-lambda'
+import { IVpc } from 'aws-cdk-lib/aws-ec2'
 
 export interface SetupServerLambdaProps {
 	codePath: string
@@ -9,6 +10,7 @@ export interface SetupServerLambdaProps {
 	memory: number
 	timeout: number
 	runtime: Runtime
+	vpc?: IVpc
 }
 
 export const DEFAULT_MEMORY = 1024
@@ -17,7 +19,7 @@ export const DEFAULT_RUNTIME = Runtime.NODEJS_16_X
 
 export const setupServerLambda = (
 	scope: Stack,
-	{ basePath, codePath, dependenciesPath, handler, memory = DEFAULT_MEMORY, timeout = DEFAULT_TIMEOUT, runtime = DEFAULT_RUNTIME }: SetupServerLambdaProps,
+	{ basePath, codePath, dependenciesPath, handler, vpc, memory = DEFAULT_MEMORY, timeout = DEFAULT_TIMEOUT, runtime = DEFAULT_RUNTIME }: SetupServerLambdaProps,
 ) => {
 	const depsLayer = new LayerVersion(scope, 'DepsLayer', {
 		// This folder does not use Custom hash as depenendencies are most likely changing every time we deploy.
@@ -39,6 +41,7 @@ export const setupServerLambda = (
 				.reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}),
 			NEXTJS_LAMBDA_BASE_PATH: basePath,
 		},
+		vpc,
 	})
 
 	new CfnOutput(scope, 'serverLambdaArn', { value: serverLambda.functionArn })

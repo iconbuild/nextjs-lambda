@@ -8,7 +8,6 @@ import { setupServerLambda, SetupServerLambdaProps } from './cdk/utils/serverLam
 
 export { NextStandaloneStack } from './cdk/stack'
 export { CustomStackProps } from './cdk/types'
-export { handler as serverHandler } from './server-handler'
 
 export const CdkUtils = {
 	setupApiGateway,

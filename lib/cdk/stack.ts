@@ -54,6 +54,7 @@ export class NextStandaloneStack extends Stack {
 			timeout: config.lambdaTimeout,
 			memory: config.lambdaMemory,
 			runtime: config.lambdaRuntime,
+			vpc: config.lambdaVpc,
 		})
 
 		this.apiGateway = this.setupApiGateway({

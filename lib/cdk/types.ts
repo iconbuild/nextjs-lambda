@@ -1,6 +1,7 @@
 import { StackProps } from 'aws-cdk-lib'
 import { Runtime } from 'aws-cdk-lib/aws-lambda'
 import { IHostedZone } from 'aws-cdk-lib/aws-route53'
+import { IVpc } from 'aws-cdk-lib/aws-ec2'
 
 export interface CustomStackProps extends StackProps {
 	apigwServerPath: string
@@ -16,6 +17,7 @@ export interface CustomStackProps extends StackProps {
 	lambdaTimeout: number
 	lambdaMemory: number
 	lambdaRuntime: Runtime
+	lambdaVpc?: IVpc
 	imageLambdaTimeout?: number
 	imageLambdaMemory?: number
 	redirectFromApex: boolean
